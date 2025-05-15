@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="lsolomein">
+        <createTable tableName="user">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(500)"/>
+            <column name="date_of_birth" type="date"/>
+            <column name="password" type="varchar(500)"/>
+        </createTable>
+        <createTable tableName="account">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint"/>
+            <column name="balance" type="decimal"/>
+            <column name="initial_balance" type="decimal"/>
+        </createTable>
+        <createTable tableName="email_data">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint"/>
+            <column name="email" type="varchar(200)"/>
+        </createTable>
+        <createTable tableName="phone_data">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint"/>
+            <column name="phone" type="varchar(13)"/>
+        </createTable>
+
+        <addUniqueConstraint columnNames="user_id" constraintName="uq_account" tableName="account"/>
+        <addUniqueConstraint columnNames="email" constraintName="uq_email" tableName="email_data"/>
+        <addUniqueConstraint columnNames="phone" constraintName="uq_phone" tableName="phone_data"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="account" constraintName="fk_account_user"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="email_data" constraintName="fk_email_data_user"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="phone_data" constraintName="fk_phone_data_user"
+                                 referencedColumnNames="id" referencedTableName="user"/>
+    </changeSet>
+
+</databaseChangeLog>
