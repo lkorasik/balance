@@ -7,3 +7,4 @@ docker-compose up -d
 # Доп инструменты
 
 - Liquibase
+- Добавил в схему поле с inital_value для проверки условия на 207%
