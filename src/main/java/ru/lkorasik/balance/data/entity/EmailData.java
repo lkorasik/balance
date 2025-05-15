@@ -1,14 +1,14 @@
-package ru.lkorasik.balance.data;
+package ru.lkorasik.balance.data.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class PhoneData {
+public class EmailData {
     @Id
     Long id;
-    String phone;
+    String email;
     @ManyToOne
     User user;
 }

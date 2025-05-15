@@ -1,4 +1,4 @@
-package ru.lkorasik.balance.data;
+package ru.lkorasik.balance.data.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
