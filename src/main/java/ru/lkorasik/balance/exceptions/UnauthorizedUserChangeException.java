@@ -1,6 +1,4 @@
-package ru.lkorasik.balance.api.user;
-
-import ru.lkorasik.balance.exceptions.ApplicationException;
+package ru.lkorasik.balance.exceptions;
 
 public class UnauthorizedUserChangeException extends ApplicationException {
     public UnauthorizedUserChangeException(long userId, long anotherUserId) {

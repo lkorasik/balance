@@ -19,7 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ru.lkorasik.balance.data.repository.UserRepository;
 import ru.lkorasik.balance.filter.JwtAuthenticationFilter;
-import ru.lkorasik.balance.service.UserService;
+import ru.lkorasik.balance.service.impl.UserServiceImpl;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    AuthenticationProvider authenticationProvider(UserService userService) {
+    AuthenticationProvider authenticationProvider(UserServiceImpl userService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
         authProvider.setUserDetailsService(userService);

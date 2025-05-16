@@ -1,4 +1,4 @@
-package ru.lkorasik.balance.api;
+package ru.lkorasik.balance.api.transfer;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

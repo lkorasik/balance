@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.lkorasik.balance.data.entity.User;
+import ru.lkorasik.balance.exceptions.UnauthorizedUserChangeException;
 import ru.lkorasik.balance.service.UserService;
 
 import java.util.List;

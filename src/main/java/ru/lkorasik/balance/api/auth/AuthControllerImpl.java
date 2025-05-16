@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.lkorasik.balance.exceptions.UseSingleUserIdentifierException;
 import ru.lkorasik.balance.service.AuthenticationService;
 import ru.lkorasik.balance.service.UserService;
 
@@ -29,10 +28,6 @@ public class AuthControllerImpl {
 
     @PostMapping("/login")
     public LoginResponseDto login(@RequestBody LoginRequestDto dto) {
-        if ((dto.email() != null) && (dto.phone() != null)) {
-            throw new UseSingleUserIdentifierException();
-        }
-
         log.info(String.valueOf(dto));
         String jwt = authenticationService.authenticate(dto);
         return new LoginResponseDto(jwt);

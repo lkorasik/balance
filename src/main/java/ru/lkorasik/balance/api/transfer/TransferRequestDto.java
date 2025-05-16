@@ -1,4 +1,4 @@
-package ru.lkorasik.balance.api;
+package ru.lkorasik.balance.api.transfer;
 
 import java.math.BigDecimal;
 
