@@ -1,9 +1,6 @@
 package ru.lkorasik.balance.data.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+@Table(name = "`user`")
 @Entity
 public class User implements UserDetails {
     @Id

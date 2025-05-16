@@ -52,19 +52,19 @@
             <column name="id">1</column>
             <column name="name">Andrew</column>
             <column name="date_of_birth">12.12.2025</column>
-            <column name="password">123</column>
+            <column name="password">$2a$12$LA6meJjAzX/QZjUNmtttTOnW7N6e7P9794AMzbzEOw92AYW4BOeEC</column> <!-- BCrypt hash of '123' -->
         </insert>
         <insert tableName="user">
             <column name="id">2</column>
             <column name="name">Ann</column>
             <column name="date_of_birth">12.12.2024</column>
-            <column name="password">123</column>
+            <column name="password">$2a$12$LA6meJjAzX/QZjUNmtttTOnW7N6e7P9794AMzbzEOw92AYW4BOeEC</column> <!-- BCrypt hash of '123' -->
         </insert>
         <insert tableName="user">
             <column name="id">3</column>
             <column name="name">Ivan</column>
             <column name="date_of_birth">12.12.2023</column>
-            <column name="password">123</column>
+            <column name="password">$2a$12$LA6meJjAzX/QZjUNmtttTOnW7N6e7P9794AMzbzEOw92AYW4BOeEC</column> <!-- BCrypt hash of '123' -->
         </insert>
 
         <insert tableName="account">
