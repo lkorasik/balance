@@ -113,4 +113,9 @@ public class UserService implements UserDetailsService {
                 PageRequest.of(dto.page().number(), dto.page().size())
         );
     }
+
+    public User findById(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found by id " + id));
+    }
 }

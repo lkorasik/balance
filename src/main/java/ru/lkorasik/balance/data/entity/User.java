@@ -18,7 +18,7 @@ public class User implements UserDetails {
     String name;
     LocalDate dateOfBirth;
     String password;
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     Account account;
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     List<PhoneData> phones;
