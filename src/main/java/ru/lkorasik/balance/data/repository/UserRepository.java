@@ -16,6 +16,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u JOIN u.emails e WHERE e.email = :email")
     Optional<User> findByEmail(String email);
 
+    @Query("SELECT u FROM User u JOIN u.phones e WHERE e.phone = :phone")
+    Optional<User> findByPhone(String phone);
+
     @Query("""
             SELECT DISTINCT u
             FROM User u
