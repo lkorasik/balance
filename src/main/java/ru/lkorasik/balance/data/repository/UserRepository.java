@@ -37,7 +37,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             UPDATE account
             SET balance = CASE WHEN balance * 1.1 <= initial_balance * 2.07
                 THEN FLOOR(balance * 1.1 * 100) / 100
-                ELSE FLOOR(initial_balance * 2.07 * 100) / 100
+                ELSE balance
             END
             """, nativeQuery = true)
     void updateBalance();
