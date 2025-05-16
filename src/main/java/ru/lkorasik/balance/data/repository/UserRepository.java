@@ -35,7 +35,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = """
             UPDATE account
-            SET balance = CASE WHEN balance * 1.1 <= initial_balance * 2.07
+            SET balance = CASE WHEN FLOOR(balance * 1.1 * 100) / 100 <= FLOOR(initial_balance * 2.07 * 100) / 100
                 THEN FLOOR(balance * 1.1 * 100) / 100
                 ELSE balance
             END
