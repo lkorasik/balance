@@ -28,7 +28,7 @@ public class UserController {
         userService.addEmail(user, dto.emails());
     }
 
-    @PatchMapping("/{id}/email")
+    @PutMapping("/{id}/email")
     public void updateEmail(@PathVariable("id") long id, @RequestBody UpdateEmailsListRequestDto dto) {
         User user = getCurrentUser(id);
         userService.updateEmails(user, dto.emails());
@@ -46,7 +46,7 @@ public class UserController {
         userService.addPhone(user, dto.phones());
     }
 
-    @PatchMapping("/{id}/phone")
+    @PutMapping("/{id}/phone")
     public void updatePhone(@PathVariable("id") long id, @RequestBody UpdatePhonesListRequestDto dto) {
         User user = getCurrentUser(id);
         userService.updatePhones(user, dto.phones());
