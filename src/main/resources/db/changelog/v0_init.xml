@@ -47,5 +47,106 @@
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="phone_data" constraintName="fk_phone_data_user"
                                  referencedColumnNames="id" referencedTableName="user"/>
     </changeSet>
+    <changeSet id="2" author="lsolomein">
+        <insert tableName="user">
+            <column name="id">1</column>
+            <column name="name">Andrew</column>
+            <column name="date_of_birth">12.12.2025</column>
+            <column name="password">123</column>
+        </insert>
+        <insert tableName="user">
+            <column name="id">2</column>
+            <column name="name">Ann</column>
+            <column name="date_of_birth">12.12.2024</column>
+            <column name="password">123</column>
+        </insert>
+        <insert tableName="user">
+            <column name="id">3</column>
+            <column name="name">Ivan</column>
+            <column name="date_of_birth">12.12.2023</column>
+            <column name="password">123</column>
+        </insert>
+
+        <insert tableName="account">
+            <column name="id">1</column>
+            <column name="user_id">1</column>
+            <column name="balance">120</column>
+            <column name="initial_balance">120</column>
+        </insert>
+        <insert tableName="account">
+            <column name="id">2</column>
+            <column name="user_id">2</column>
+            <column name="balance">350</column>
+            <column name="initial_balance">350</column>
+        </insert>
+        <insert tableName="account">
+            <column name="id">3</column>
+            <column name="user_id">3</column>
+            <column name="balance">10</column>
+            <column name="initial_balance">10</column>
+        </insert>
+
+        <insert tableName="email_data">
+            <column name="id">1</column>
+            <column name="user_id">1</column>
+            <column name="email">q@q.q</column>
+        </insert>
+        <insert tableName="email_data">
+            <column name="id">2</column>
+            <column name="user_id">1</column>
+            <column name="email">w@w.w</column>
+        </insert>
+        <insert tableName="email_data">
+            <column name="id">3</column>
+            <column name="user_id">1</column>
+            <column name="email">e@e.e</column>
+        </insert>
+        <insert tableName="email_data">
+            <column name="id">4</column>
+            <column name="user_id">2</column>
+            <column name="email">r@r.r</column>
+        </insert>
+        <insert tableName="email_data">
+            <column name="id">5</column>
+            <column name="user_id">2</column>
+            <column name="email">t@t.t</column>
+        </insert>
+        <insert tableName="email_data">
+            <column name="id">6</column>
+            <column name="user_id">3</column>
+            <column name="email">y@y.y</column>
+        </insert>
+
+        <insert tableName="phone_data">
+            <column name="id">1</column>
+            <column name="user_id">1</column>
+            <column name="phone">79220000000</column>
+        </insert>
+        <insert tableName="phone_data">
+            <column name="id">2</column>
+            <column name="user_id">1</column>
+            <column name="phone">79220000001</column>
+        </insert>
+        <insert tableName="phone_data">
+            <column name="id">3</column>
+            <column name="user_id">1</column>
+            <column name="phone">79220000002</column>
+        </insert>
+        <insert tableName="phone_data">
+            <column name="id">4</column>
+            <column name="user_id">2</column>
+            <column name="phone">79220000003</column>
+        </insert>
+        <insert tableName="phone_data">
+            <column name="id">5</column>
+            <column name="user_id">2</column>
+            <column name="phone">79220000004</column>
+        </insert>
+        <insert tableName="phone_data">
+            <column name="id">6</column>
+            <column name="user_id">3</column>
+            <column name="phone">79220000005</column>
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>
