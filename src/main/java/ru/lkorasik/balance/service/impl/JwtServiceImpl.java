@@ -7,7 +7,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.lkorasik.balance.data.entity.User;
 import ru.lkorasik.balance.service.JwtService;
@@ -62,9 +61,9 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token, User user) {
         final Long userId = extractId(token);
-        return (userId.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        return (userId.equals(user.getId())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

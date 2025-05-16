@@ -1,7 +1,6 @@
 package ru.lkorasik.balance.service;
 
 import io.jsonwebtoken.Claims;
-import org.springframework.security.core.userdetails.UserDetails;
 import ru.lkorasik.balance.data.entity.User;
 
 import java.util.Map;
@@ -16,5 +15,5 @@ public interface JwtService {
 
     String generateToken(Map<String, Object> extraClaims, User user);
 
-    boolean isTokenValid(String token, UserDetails userDetails);
+    boolean isTokenValid(String token, User user);
 }
