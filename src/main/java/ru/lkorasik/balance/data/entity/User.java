@@ -7,21 +7,95 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Table(name = "`user`")
 @Entity
 public class User implements UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
     LocalDate dateOfBirth;
     String password;
     @OneToOne(mappedBy = "user")
     Account account;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     List<PhoneData> phones;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     List<EmailData> emails;
+
+    public void addEmail(EmailData emailData) {
+        emails.add(emailData);
+        emailData.setUser(this);
+    }
+
+    public void deleteEmail(EmailData emailData) {
+        emailData.setUser(null);
+        emails.remove(emailData);
+    }
+
+    public void addPhone(PhoneData phoneData) {
+        phones.add(phoneData);
+        phoneData.setUser(this);
+    }
+
+    public void deletePhone(PhoneData phoneData) {
+        phoneData.setUser(null);
+        phones.remove(phoneData);
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public List<EmailData> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<EmailData> emails) {
+        this.emails = emails;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<PhoneData> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<PhoneData> phones) {
+        this.phones = phones;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

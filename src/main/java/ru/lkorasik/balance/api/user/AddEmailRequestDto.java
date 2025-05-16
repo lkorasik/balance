@@ -1,4 +1,4 @@
-package ru.lkorasik.balance.api;
+package ru.lkorasik.balance.api.user;
 
 import java.util.List;
 
