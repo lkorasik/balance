@@ -1,17 +1,19 @@
 package ru.lkorasik.balance.service.impl;
 
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.lkorasik.balance.data.entity.Account;
 import ru.lkorasik.balance.data.entity.User;
 import ru.lkorasik.balance.data.repository.UserRepository;
 import ru.lkorasik.balance.exceptions.NegativeTransactionAmountException;
 import ru.lkorasik.balance.exceptions.NotEnoughMoneyOnCardException;
 import ru.lkorasik.balance.exceptions.SameUserTransactionException;
+import ru.lkorasik.balance.exceptions.ZeroTransactionAmountException;
 import ru.lkorasik.balance.service.MoneyService;
 import ru.lkorasik.balance.service.UserService;
 
@@ -32,7 +34,7 @@ public class MoneyServiceImpl implements MoneyService {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void transferMoney(User sourceUser, long targetId, BigDecimal amount) {
         log.info("Requested transaction from: {}, to: {}, amount: {}", sourceUser.getId(), targetId, amount);
 
@@ -61,13 +63,16 @@ public class MoneyServiceImpl implements MoneyService {
         if (amount.signum() == -1) {
             throw new NegativeTransactionAmountException();
         }
+        if (amount.signum() == 0) {
+            throw new ZeroTransactionAmountException();
+        }
         if (from.getBalance().compareTo(amount) < 0) {
             throw new NotEnoughMoneyOnCardException(from.getId());
         }
     }
 
     @Scheduled(fixedDelay = 30, initialDelay = 30, timeUnit = TimeUnit.SECONDS)
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public void updateBalance() {
         userRepository.updateBalance();
     }
