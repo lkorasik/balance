@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.lkorasik.balance.data.entity.User;
 import ru.lkorasik.balance.service.UserService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -50,6 +52,16 @@ public class UserController {
     public void deletePhone(@PathVariable("id") long id, @RequestBody DeletePhonesRequestDto dto) {
         User user = getCurrentUser(id);
         userService.deletePhones(user, dto.phoneIds());
+    }
+
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable("id") long id) {
+        return getCurrentUser(id);
+    }
+
+    @GetMapping("/all")
+    public List<User> searchUsers(@RequestBody SearchUserRequestDto dto) {
+        return userService.searchUsers(dto);
     }
 
     private User getCurrentUser(long id) {

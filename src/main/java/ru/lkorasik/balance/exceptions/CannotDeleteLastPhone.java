@@ -1,6 +1,4 @@
-package ru.lkorasik.balance.service;
-
-import ru.lkorasik.balance.exceptions.ApplicationException;
+package ru.lkorasik.balance.exceptions;
 
 public class CannotDeleteLastPhone extends ApplicationException {
     public CannotDeleteLastPhone() {

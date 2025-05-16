@@ -2,15 +2,19 @@ package ru.lkorasik.balance.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import ru.lkorasik.balance.api.user.SearchUserRequestDto;
 import ru.lkorasik.balance.api.user.UpdateEmailRequestDto;
 import ru.lkorasik.balance.api.user.UpdatePhoneRequestDto;
 import ru.lkorasik.balance.data.entity.EmailData;
 import ru.lkorasik.balance.data.entity.PhoneData;
 import ru.lkorasik.balance.data.entity.User;
 import ru.lkorasik.balance.data.repository.UserRepository;
+import ru.lkorasik.balance.exceptions.CannotDeleteLastEmail;
+import ru.lkorasik.balance.exceptions.CannotDeleteLastPhone;
 import ru.lkorasik.balance.exceptions.UserNotFoundException;
 
 import java.util.List;
@@ -98,5 +102,15 @@ public class UserService implements UserDetailsService {
         List<PhoneData> list = user.getPhones().stream().filter(phone -> phoneIds.contains(phone.getId())).toList();
         list.forEach(user::deletePhone);
         userRepository.save(user);
+    }
+
+    public List<User> searchUsers(SearchUserRequestDto dto) {
+        return userRepository.findAllFiltered(
+                dto.dateOfBirth(),
+                dto.name(),
+                dto.phone(),
+                dto.email(),
+                PageRequest.of(dto.page().number(), dto.page().size())
+        );
     }
 }
