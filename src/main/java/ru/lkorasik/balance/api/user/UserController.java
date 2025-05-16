@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.lkorasik.balance.data.entity.User;
 import ru.lkorasik.balance.exceptions.UnauthorizedUserChangeException;
+import ru.lkorasik.balance.service.Mapper;
 import ru.lkorasik.balance.service.UserService;
 
 import java.util.List;
@@ -13,10 +14,12 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
+    private final Mapper mapper;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, Mapper mapper) {
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     @PostMapping("/{id}/email")
@@ -56,13 +59,14 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable("id") long id) {
-        return getCurrentUser(id);
+    public UserResponseDto getUser(@PathVariable("id") long id) {
+        User user = getCurrentUser(id);
+        return mapper.map(user);
     }
 
     @GetMapping("/all")
-    public List<User> searchUsers(@RequestBody SearchUserRequestDto dto) {
-        return userService.searchUsers(dto);
+    public List<UserResponseDto> searchUsers(@RequestBody SearchUserRequestDto dto) {
+        return userService.searchUsers(dto).stream().map(mapper::map).toList();
     }
 
     private User getCurrentUser(long id) {

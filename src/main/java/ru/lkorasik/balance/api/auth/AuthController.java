@@ -14,14 +14,14 @@ import ru.lkorasik.balance.service.UserService;
 @Validated
 @RestController
 @RequestMapping("/api/auth")
-public class AuthControllerImpl {
-    private static final Logger log = LoggerFactory.getLogger(AuthControllerImpl.class);
+public class AuthController {
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     private final UserService userService;
     private final AuthenticationService authenticationService;
 
     @Autowired
-    public AuthControllerImpl(UserService userService, AuthenticationService authenticationService) {
+    public AuthController(UserService userService, AuthenticationService authenticationService) {
         this.userService = userService;
         this.authenticationService = authenticationService;
     }

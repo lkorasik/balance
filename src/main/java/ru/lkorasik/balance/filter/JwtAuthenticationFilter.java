@@ -18,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import ru.lkorasik.balance.exceptions.ApplicationException;
 import ru.lkorasik.balance.service.JwtService;
+import ru.lkorasik.balance.service.UserService;
 
 import java.io.IOException;
 
@@ -27,6 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private HandlerExceptionResolver handlerExceptionResolver;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -45,12 +48,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             final String jwt = authHeader.substring(7);
-            final String userEmail = jwtService.extractUsername(jwt);
+            final Long userId = jwtService.extractId(jwt);
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if (userEmail != null && authentication == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            if (userId != null && authentication == null) {
+                UserDetails userDetails = userService.findById(userId);
 
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

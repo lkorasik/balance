@@ -26,8 +26,8 @@ public class JwtServiceImpl implements JwtService {
     private long jwtExpiration;
 
     @Override
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public Long extractId(String token) {
+        return extractClaim(token, x -> Long.parseLong(x.getSubject()));
     }
 
     @Override
@@ -63,8 +63,8 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        final Long userId = extractId(token);
+        return (userId.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
