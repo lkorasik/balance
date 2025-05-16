@@ -4,7 +4,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.lkorasik.balance.data.entity.User;
 
@@ -20,18 +19,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u JOIN u.phones e WHERE e.phone = :phone")
     Optional<User> findByPhone(String phone);
 
-    @Query("""
-            SELECT DISTINCT u
-            FROM User u
-            JOIN u.emails e
-            JOIN u.phones p
+    @Query(value = """
+            SELECT DISTINCT u.*
+            FROM "user" u
+            LEFT JOIN email_data e ON e.user_id = u.id
+            LEFT JOIN phone_data p ON p.user_id = u.id
             WHERE TRUE
-                AND (CAST(:dateOfBirth AS DATE) IS NOT NULL OR u.dateOfBirth > CAST(:dateOfBirth AS DATE))
-                AND (:name IS NOT NULL OR u.name LIKE CONCAT(:name, '%'))
-                AND (:phone IS NOT NULL OR p.phone = :phone)
-                AND (:email IS NOT NULL OR e.email = :email)
-            """)
-    List<User> findAllFiltered(@Param("dateOfBirth") LocalDate dateOfBirth, String name, String phone, String email, Pageable pageable);
+                AND (COALESCE(CAST(:dateOfBirth AS DATE), NULL) IS NULL OR u.date_of_birth > CAST(:dateOfBirth AS DATE))
+                AND (:name IS NULL OR u.name LIKE CONCAT(:name, '%'))
+                AND (:phone IS NULL OR p.phone = :phone)
+                AND (:email IS NULL OR e.email = :email)
+            """, nativeQuery = true)
+    List<User> findAllFiltered(LocalDate dateOfBirth, String name, String phone, String email, Pageable pageable);
 
     @Modifying
     @Query(value = """
