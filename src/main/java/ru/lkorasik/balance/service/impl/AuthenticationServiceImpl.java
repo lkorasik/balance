@@ -2,17 +2,16 @@ package ru.lkorasik.balance.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.lkorasik.balance.api.auth.LoginRequestDto;
 import ru.lkorasik.balance.data.entity.User;
 import ru.lkorasik.balance.data.repository.UserRepository;
-import ru.lkorasik.balance.exceptions.UseSingleUserIdentifierException;
-import ru.lkorasik.balance.exceptions.UserNotFoundByEmailException;
-import ru.lkorasik.balance.exceptions.UserNotFoundByPhoneException;
-import ru.lkorasik.balance.exceptions.UserNotFoundException;
+import ru.lkorasik.balance.exceptions.*;
 import ru.lkorasik.balance.service.AuthenticationService;
 import ru.lkorasik.balance.service.JwtService;
+import ru.lkorasik.balance.service.auth.EmailAuthenticationToken;
+import ru.lkorasik.balance.service.auth.PhoneAuthenticationToken;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -33,22 +32,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String authenticate(LoginRequestDto input) {
+        assertCorrectAuthenticationRequest(input);
+
+        Authentication authentication = buildAuthentication(input);
+        authenticationManager.authenticate(authentication);
+
+        User user = getUser(input);
+
+        return jwtService.generateToken(user);
+    }
+
+    private void assertCorrectAuthenticationRequest(LoginRequestDto input) {
         if ((input.email() != null) && (input.phone() != null)) {
             throw new UseSingleUserIdentifierException();
         }
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(input.email(), input.password());
-        authenticationManager.authenticate(token);
-
-        User user = null;
-        if (input.email() != null) {
-            user = userRepository.findByEmail(input.email()).orElseThrow(() -> new UserNotFoundByEmailException(input.email()));
-        } else if (input.phone() != null) {
-            user = userRepository.findByPhone(input.phone()).orElseThrow(() -> new UserNotFoundByPhoneException(input.phone()));
-        } else {
-            throw new UserNotFoundException("User not found");
+        if ((input.email() == null) && (input.phone() == null)) {
+            throw new NoUserIdentifierException();
         }
+    }
 
-        return jwtService.generateToken(user);
+    private Authentication buildAuthentication(LoginRequestDto input) {
+        if (input.email() != null) {
+            return new EmailAuthenticationToken(input.email(), input.password());
+        } else {
+            return new PhoneAuthenticationToken(input.phone(), input.password());
+        }
+    }
+
+    private User getUser(LoginRequestDto input) {
+        if (input.email() != null) {
+            return userRepository.findByEmail(input.email()).orElseThrow(() -> new UserNotFoundByEmailException(input.email()));
+        } else {
+            return userRepository.findByPhone(input.phone()).orElseThrow(() -> new UserNotFoundByPhoneException(input.phone()));
+        }
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.lkorasik.balance.service.AuthenticationService;
-import ru.lkorasik.balance.service.UserService;
 
 @Validated
 @RestController
@@ -17,12 +16,10 @@ import ru.lkorasik.balance.service.UserService;
 public class AuthController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
-    private final UserService userService;
     private final AuthenticationService authenticationService;
 
     @Autowired
-    public AuthController(UserService userService, AuthenticationService authenticationService) {
-        this.userService = userService;
+    public AuthController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 

@@ -31,12 +31,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(email));
-    }
-
-    @Override
     public void addEmail(User user, List<String> emails) {
         emails.forEach(email -> {
             EmailData emailData = new EmailData(email);
@@ -125,5 +119,17 @@ public class UserServiceImpl implements UserService {
     public User findById(long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found by id " + id));
+    }
+
+    @Override
+    public UserDetails loadByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found by email " + email));
+    }
+
+    @Override
+    public UserDetails loadByPhone(String phone) {
+        return userRepository.findByPhone(phone)
+                .orElseThrow(() -> new UserNotFoundException("User not found by phone " + phone));
     }
 }
