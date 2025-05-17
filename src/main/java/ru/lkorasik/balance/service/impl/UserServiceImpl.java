@@ -33,10 +33,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addEmail(User user, List<String> emails) {
         emails.forEach(email -> {
+            validateEmail(email);
             EmailData emailData = new EmailData(email);
             user.addEmail(emailData);
         });
         userRepository.save(user);
+    }
+
+    private void validateEmail(String email) {
+        if (email == null) {
+            throw new IllegalEmailException();
+        }
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalEmailException();
+        }
     }
 
     @Override
@@ -59,10 +69,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addPhone(User user, List<String> phones) {
         phones.forEach(phone -> {
+            validatePhoneNumber(phone);
             PhoneData phoneData = new PhoneData(phone);
             user.addPhone(phoneData);
         });
         userRepository.save(user);
+    }
+
+    private void validatePhoneNumber(String phoneNumber) {
+        if (phoneNumber == null) {
+            throw new IllegalPhoneNumberException();
+        }
+        if (!isCorrectNumber(phoneNumber)) {
+            throw new IllegalPhoneNumberException();
+        }
+        if (!phoneNumber.matches("[+0-9]+")) {
+            throw new IllegalPhoneNumberException();
+        }
+    }
+
+    private boolean isCorrectNumber(String phoneNumber) {
+        return (((phoneNumber.length() == 11) && phoneNumber.startsWith("8")) || ((phoneNumber.length() == 12) && phoneNumber.startsWith("+7")));
     }
 
     @Override
