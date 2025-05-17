@@ -1,5 +1,6 @@
 package ru.lkorasik.balance.api.auth;
 
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginResponseDto login(@RequestBody LoginRequestDto dto) {
+    public LoginResponseDto login(@Valid @RequestBody LoginRequestDto dto) {
         log.info(String.valueOf(dto));
         String jwt = authenticationService.authenticate(dto);
         return new LoginResponseDto(jwt);

@@ -1,6 +1,7 @@
 package ru.lkorasik.balance.api.exception;
 
 import io.jsonwebtoken.JwtException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,6 +34,18 @@ public class ExceptionAdvice {
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ValidationExceptionDto(errors);
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ValidationExceptionDto handleValidationExceptions(ConstraintViolationException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getConstraintViolations().forEach((error) -> {
+            String fieldName = error.getPropertyPath().toString();
+            String errorMessage = error.getMessage();
             errors.put(fieldName, errorMessage);
         });
         return new ValidationExceptionDto(errors);
