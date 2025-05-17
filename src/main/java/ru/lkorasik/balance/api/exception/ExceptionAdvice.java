@@ -1,5 +1,6 @@
 package ru.lkorasik.balance.api.exception;
 
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,6 +17,12 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ApplicationException.class)
     public ExceptionDto handleException(ApplicationException exception) {
+        return new ExceptionDto(exception.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(JwtException.class)
+    public ExceptionDto handleJwtException(JwtException exception) {
         return new ExceptionDto(exception.getMessage());
     }
 
