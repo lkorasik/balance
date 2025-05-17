@@ -11,6 +11,7 @@ import ru.lkorasik.balance.exceptions.UnauthorizedUserChangeException;
 import ru.lkorasik.balance.service.Mapper;
 import ru.lkorasik.balance.service.UserService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -74,10 +75,26 @@ public class UserController {
         return mapper.map(user);
     }
 
-    @Cacheable(value = RedisConfiguration.USER_SEARCH, key = "#dto")
+    @Cacheable(
+            value = RedisConfiguration.USER_SEARCH,
+            key = "#email + ':' + #phone + ':' + #name + ':' + #dateOfBirth + ':' + #pageSize + ':' + #pageNumber"
+    )
     @GetMapping("/all")
-    public List<UserResponseDto> searchUsers(@RequestBody SearchUserRequestDto dto) {
-        return userService.searchUsers(dto).stream().map(mapper::map).toList();
+    public List<UserResponseDto> searchUsers(
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "phone", required = false) String phone,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "dateOfBirth", required = false) LocalDate dateOfBirth,
+            @RequestParam(value = "pageSize") int pageSize,
+            @RequestParam(value = "pageNumber") int pageNumber
+    ) {
+        PageRequestDto page = new PageRequestDto(pageSize, pageNumber);
+        SearchUserRequestDto dto = new SearchUserRequestDto(page, dateOfBirth, phone, name, email);
+
+        return userService.searchUsers(dto)
+                .stream()
+                .map(mapper::map)
+                .toList();
     }
 
     private User getCurrentUser(long id) {
