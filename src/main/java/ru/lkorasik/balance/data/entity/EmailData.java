@@ -6,11 +6,11 @@ import jakarta.persistence.*;
 public class EmailData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String email;
+    private Long id;
+    private String email;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User user;
+    private User user;
 
     public EmailData() {
     }

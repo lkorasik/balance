@@ -7,23 +7,34 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 @Table(name = "`user`")
 @Entity
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String name;
-    LocalDate dateOfBirth;
-    String password;
+    private Long id;
+    private String name;
+    private LocalDate dateOfBirth;
+    private String password;
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    Account account;
+    private Account account;
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<PhoneData> phones;
+    private List<PhoneData> phones;
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    List<EmailData> emails;
+    private List<EmailData> emails;
+
+    public User() {
+    }
+
+    public User(Long id, Account account) {
+        this.id = id;
+        this.account = account;
+    }
+
+    public User(Account account) {
+        this.account = account;
+    }
 
     public void addEmail(EmailData emailData) {
         emails.add(emailData);
@@ -109,6 +120,6 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return emails.stream().findFirst().get().email;
+        return emails.stream().findFirst().get().getEmail();
     }
 }

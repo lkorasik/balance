@@ -9,10 +9,18 @@ import java.math.BigDecimal;
 @Entity
 public class Account {
     @Id
-    Long id;
+    private Long id;
     @OneToOne
-    User user;
-    BigDecimal balance;
+    private User user;
+    private BigDecimal balance;
+
+    public Account() {
+    }
+
+    public Account(Long id, BigDecimal balance) {
+        this.id = id;
+        this.balance = balance;
+    }
 
     public BigDecimal getBalance() {
         return balance;
