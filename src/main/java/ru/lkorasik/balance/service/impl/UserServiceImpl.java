@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateEmails(User user, List<UpdateEmailRequestDto> emails) {
         Map<Long, EmailData> userEmails = user.getEmails()
                 .stream()
@@ -65,6 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updatePhones(User user, List<UpdatePhoneRequestDto> phones) {
         Map<Long, PhoneData> userPhones = user.getPhones()
                 .stream()
